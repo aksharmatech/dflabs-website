@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Foundation Labs - Enterprise Data Consulting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #00d4ff, #0099ff);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-50px) translateX(100px); }
+            75% { transform: translateY(-150px) translateX(25px); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00d4ff;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: #b0b8d4;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Services Section */
+        .services {
+            position: relative;
+            padding: 8rem 5%;
+            z-index: 1;
+            background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.05));
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, #ffffff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        .service-card p {
+            color: #b0b8d4;
+            line-height: 1.7;
+        }
+
+        /* About Section */
+        .about {
+            position: relative;
+            padding: 8rem 5%;
+            z-index: 1;
+        }
+
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            font-size: 1.2rem;
+            color: #b0b8d4;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            position: relative;
+            padding: 6rem 5%;
+            z-index: 1;
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #b0b8d4;
+        }
+
+        /* Contact Section */
+        .contact {
+            position: relative;
+            padding: 8rem 5%;
+            z-index: 1;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-info {
+            margin-top: 3rem;
+        }
+
+        .contact-item {
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            color: #b0b8d4;
+        }
+
+        .contact-item a {
+            color: #00d4ff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: #00ffff;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+
+        footer p {
+            color: #b0b8d4;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <header>
+        <nav>
+            <div class="logo">Data Foundation Labs</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Transform Data into Strategic Assets</h1>
+            <p>Enterprise-grade data consulting services that empower your organization to build robust data foundations, drive intelligent decisions, and unlock unprecedented business value.</p>
+            <a href="#contact" class="cta-button">Get Started</a>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2 class="section-title">Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <span class="service-icon">📊</span>
+                <h3>Data Strategy & Architecture</h3>
+                <p>Design scalable data architectures aligned with your business objectives. We build foundations that grow with your organization.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-icon">🔍</span>
+                <h3>Analytics & Insights</h3>
+                <p>Transform raw data into actionable insights with advanced analytics, machine learning, and visualization solutions.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-icon">⚙️</span>
+                <h3>Data Engineering</h3>
+                <p>Build robust data pipelines, ETL processes, and data warehousing solutions for seamless data flow and integration.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-icon">🛡️</span>
+                <h3>Data Governance</h3>
+                <p>Implement comprehensive data governance frameworks ensuring security, compliance, and data quality across your enterprise.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-icon">☁️</span>
+                <h3>Cloud Migration</h3>
+                <p>Seamlessly migrate your data infrastructure to the cloud with zero downtime and optimized performance.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-icon">🤖</span>
+                <h3>AI & Machine Learning</h3>
+                <p>Leverage cutting-edge AI and ML models to automate processes and uncover hidden patterns in your data.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Projects Delivered</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Client Satisfaction</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Expert Consultants</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <h2 class="section-title">About Data Foundation Labs</h2>
+        <div class="about-content">
+            <p>Data Foundation Labs is a premier data consulting firm specializing in helping enterprises harness the full potential of their data assets. With a team of seasoned data architects, engineers, and scientists, we deliver end-to-end solutions that transform how organizations collect, process, analyze, and leverage data.</p>
+            <p>Our mission is to build strong data foundations that enable businesses to make informed decisions, drive innovation, and maintain competitive advantage in an increasingly data-driven world.</p>
+            <p>We combine deep technical expertise with industry knowledge to deliver solutions that are not just technologically advanced, but also aligned with your unique business challenges and goals.</p>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-content">
+            <p style="color: #b0b8d4; font-size: 1.2rem; margin-bottom: 2rem;">
+                Ready to transform your data landscape? Let's discuss how we can help your organization build a solid data foundation.
+            </p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>Website:</strong> <a href="https://dflabs.in">dflabs.in</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Email:</strong> <a href="mailto:contact@dflabs.in">contact@dflabs.in</a>
+                </div>
+            </div>
+            <a href="mailto:contact@dflabs.in" class="cta-button" style="margin-top: 2rem;">Contact Us</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Data Foundation Labs. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Animated background particles
+        const bgAnimation = document.getElementById('bgAnimation');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 6 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDuration = Math.random() * 10 + 15 + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            bgAnimation.appendChild(particle);
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animate stats on scroll
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    const finalValue = target.textContent;
+                    animateValue(target, finalValue);
+                    observer.unobserve(target);
+                }
+            });
+        }, observerOptions);
+
+        statNumbers.forEach(stat => observer.observe(stat));
+
+        function animateValue(element, finalValue) {
+            const isPercentage = finalValue.includes('%');
+            const isPlus = finalValue.includes('+');
+            const numericValue = parseInt(finalValue.replace(/[^\d]/g, ''));
+            
+            let current = 0;
+            const increment = numericValue / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= numericValue) {
+                    element.textContent = finalValue;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + (isPercentage ? '%' : isPlus ? '+' : '');
+                }
+            }, 30);
+        }
+    </script>
+</body>
+</html>
