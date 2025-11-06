@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers - Data Foundation Labs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #00d4ff, #0099ff);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-50px) translateX(100px); }
+            75% { transform: translateY(-150px) translateX(25px); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00d4ff;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: #00d4ff;
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            padding-top: 120px;
+            min-height: 100vh;
+            z-index: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 4rem 5% 3rem;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: #b0b8d4;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Jobs Section */
+        .jobs-section {
+            padding: 2rem 5% 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .job-listing {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .job-listing:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .job-title {
+            font-size: 2rem;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-type {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .job-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #b0b8d4;
+            font-size: 1rem;
+        }
+
+        .job-meta-item span {
+            color: #00d4ff;
+        }
+
+        .job-description {
+            margin-bottom: 1.5rem;
+        }
+
+        .job-description h4 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .job-description ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .job-description li {
+            color: #b0b8d4;
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .job-description li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        .job-description p {
+            color: #b0b8d4;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .apply-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .apply-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+        }
+
+        .no-jobs {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+
+        .no-jobs h3 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .no-jobs p {
+            color: #b0b8d4;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+
+        footer p {
+            color: #b0b8d4;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .job-title {
+                font-size: 1.5rem;
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+
+            .job-meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html">Data Foundation Labs</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="careers.html" class="active">Careers</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1 class="page-title">Join Our Team</h1>
+            <p class="page-subtitle">
+                Be part of a team that's transforming how enterprises leverage data. We're looking for passionate individuals who want to make a real impact.
+            </p>
+        </div>
+
+        <section class="jobs-section">
+            <!-- Job Listing Template - Duplicate and modify this section for each job opening -->
+
+            <div class="job-listing">
+                <div class="job-header">
+                    <div>
+                        <h2 class="job-title">Sr. Software Development Engineer</h2>
+                    </div>
+                    <span class="job-type">Full-Time</span>
+                </div>
+
+                <div class="job-meta">
+                    <div class="job-meta-item">
+                        <span>📍</span> Remote, India
+                    </div>
+                    <div class="job-meta-item">
+                        <span>💼</span> 6+ years experience
+                    </div>
+                    <div class="job-meta-item">
+                        <span>💰</span> Competitive salary
+                    </div>
+                </div>
+
+                <div class="job-description">
+                    <h4>About the Role</h4>
+                    <p>
+                        We're seeking an experienced Sr. Software Development Engineer to design and build scalable and efficient server-side applications and APIs for our clients. You'll work with cutting-edge technologies to solve complex challenges.
+                    </p>
+
+                    <h4>Responsibilities</h4>
+                    <ul>
+                        <li>Node.js Development: Designing, developing, and maintaining scalable and efficient server-side applications and APIs using Node.js, often with frameworks like Express.js.</li>
+                        <li>AWS Integration: Utilizing various AWS services such as Lambda (for serverless functions), S3 (for storage), EC2 (for virtual servers), RDS (for databases), DynamoDB, API Gateway, and others to build and deploy applications.</li>
+                        <li>Cloud Architecture: Designing and implementing cloud-native solutions, including serverless architectures, microservices, and containerized applications using tools like Docker and Kubernetes on AWS.</li>
+                        <li>Deployment and Operations: Deploying and managing Node.js applications on AWS, potentially using tools like AWS Elastic Beanstalk, AWS Amplify, or CI/CD pipelines with AWS CodePipeline/CodeBuild.</li>
+                        <li>Performance and Security: Optimizing application performance, ensuring scalability, and implementing security best practices within the AWS environment.</li>
+                        <li>Troubleshooting and Debugging: Identifying and resolving issues in Node.js applications and AWS deployments.</li>                    
+                    </ul>
+
+                    <h4>Required Skills and Qualifications:</h4>
+                    <ul>
+                        <li>6+ years of experience in software engineering or related field</li>
+                        <li>Proficiency in Node.js: Strong command of JavaScript, Node.js, and related libraries/frameworks.</li>
+                        <li>AWS Expertise: In-depth knowledge and hands-on experience with core AWS services relevant to application development and deployment.</li>
+                        <li>AWS Certification: Holding relevant AWS certifications, such as AWS Certified Developer – Associate, AWS Certified Solutions Architect – Associate, or AWS Certified DevOps Engineer – Professional, demonstrates validated expertise.</li>
+                        <li>Database Knowledge: Experience with relational databases (e.g., PostgreSQL, MySQL with AWS RDS) and/or NoSQL databases (e.g., AWS DynamoDB).</li>
+                        <li>API Design: Experience with designing and implementing RESTful APIs.</li>
+                        <li>Version Control: Proficiency with Git and collaborative development workflows.</li>
+                        <li>Problem-Solving: Strong analytical and problem-solving skills to address technical challenge.</li>
+                    </ul>
+
+                    <h4>Desired Qualifications (may vary depending on seniority):</h4>
+                    <ul>
+                        <li>Experience with Infrastructure as Code (IaC) tools like AWS CloudFormation or AWS CDK.</li>
+                        <li>Knowledge of front-end technologies (e.g., React, Angular, Vue.js) for full-stack roles.</li>
+                        <li>Experience with testing frameworks and methodologies.</li>
+                        <li>Understanding of DevOps principles.</li>
+                    </ul>
+                </div>
+
+                <a href="mailto:careers@dflabs.in?subject=Application: Sr. Software Development Engineer" class="apply-button">Apply Now</a>
+            </div>
+
+            
+
+            <!-- To add more jobs, copy the job-listing div above and modify the content -->
+
+            <!-- Uncomment this section if there are no current openings
+            <div class="no-jobs">
+                <h3>No Current Openings</h3>
+                <p>We don't have any open positions at the moment, but we're always looking for talented individuals. Feel free to send your resume to <a href="mailto:careers@dflabs.in" style="color: #00d4ff; text-decoration: none;">careers@dflabs.in</a> and we'll keep you in mind for future opportunities.</p>
+            </div>
+            -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Data Foundation Labs. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Animated background particles
+        const bgAnimation = document.getElementById('bgAnimation');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 6 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDuration = Math.random() * 10 + 15 + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            bgAnimation.appendChild(particle);
+        }
+    </script>
+</body>
+</html>
