@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Foundation Labs (DF Labs) – Turning Data Complexity Into Competitive Advantage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@300;400;500&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:      #0b1528;
+      --navy-mid:  #0f1e35;
+      --navy-light:#152240;
+      --blue:      #1a7fd4;
+      --blue-b:    #1565b8;
+      --blue-light:#3b9eff;
+      --cyan:      #00c9e4;
+      --white:     #ffffff;
+      --off-white: #e8edf5;
+      --muted:     #8fa4c0;
+      --dim:       #3d5270;
+      --border:    rgba(255,255,255,0.08);
+      --border-b:  rgba(26,127,212,0.3);
+      --font-h:    'Playfair Display', Georgia, serif;
+      --font-b:    'Figtree', sans-serif;
+      --font-m:    'DM Mono', monospace;
+      --max-w:     1220px;
+      --r:         14px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-b);
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 120% 50% at 70% 10%, rgba(26,127,212,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 40% at 10% 80%, rgba(0,201,228,0.04) 0%, transparent 55%);
+    }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 36px; position: relative; z-index: 1; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 18px 0;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(11,21,40,0.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 11px; }
+    .logo-icon {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--cyan) 100%);
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .logo-icon svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 1.8; }
+    .logo-wordmark { display: flex; flex-direction: column; line-height: 1; }
+    .logo-wordmark strong { font-family: var(--font-b); font-weight: 700; font-size: 0.95rem; letter-spacing: -0.01em; }
+    .logo-wordmark span { font-family: var(--font-m); font-size: 0.65rem; color: var(--blue-light); letter-spacing: 0.1em; margin-top: 2px; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--blue); color: #fff !important;
+      padding: 9px 22px; border-radius: 100px;
+      font-weight: 600 !important; font-size: 0.85rem !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--blue-b); transform: translateY(-1px); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 201; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: 0.3s; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 140px 0 80px; position: relative; overflow: hidden;
+    }
+    .wave-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .wave-bg svg { position: absolute; bottom: 0; width: 100%; opacity: 0.12; }
+    .hero-cloud {
+      position: absolute; bottom: -60px; right: -60px; z-index: 0;
+      pointer-events: none; width: 520px; opacity: 0.07;
+    }
+    .hero-label {
+      font-family: var(--font-m); font-size: 0.72rem; letter-spacing: 0.16em;
+      color: var(--blue-light); text-transform: uppercase; margin-bottom: 20px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero h1 {
+      font-family: var(--font-h); font-size: clamp(2.8rem, 6.5vw, 6rem);
+      font-weight: 900; line-height: 1.0; letter-spacing: -0.01em;
+      max-width: 860px; margin-bottom: 32px;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+    .hero h1 .hl { color: var(--blue-light); }
+    .hero-sub {
+      font-size: clamp(1rem, 1.6vw, 1.15rem); font-weight: 300; color: var(--muted);
+      max-width: 580px; line-height: 1.75; margin-bottom: 44px;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeUp 0.6s ease 0.3s both; }
+    .btn-primary {
+      background: var(--blue); color: #fff;
+      padding: 14px 32px; border-radius: 100px;
+      font-weight: 600; font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { background: var(--blue-b); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(26,127,212,0.35); }
+    .btn-ghost {
+      border: 1px solid var(--border-b); color: var(--muted);
+      padding: 14px 32px; border-radius: 100px;
+      font-weight: 400; font-size: 0.95rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--blue-light); color: var(--white); }
+
+    /* SECTIONS */
+    section { position: relative; z-index: 1; }
+    .s-label {
+      font-family: var(--font-m); font-size: 0.7rem; letter-spacing: 0.15em;
+      color: var(--blue-light); text-transform: uppercase; margin-bottom: 12px;
+    }
+    .s-title {
+      font-family: var(--font-h); font-size: clamp(1.9rem, 3.5vw, 3rem);
+      font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 18px;
+    }
+    .s-sub { font-size: 1rem; color: var(--muted); line-height: 1.75; max-width: 620px; margin-bottom: 56px; }
+
+    /* MISSION */
+    #mission { padding: 100px 0; background: var(--navy-mid); }
+    .mission-grid { display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
+    .mission-left { padding: 60px 56px; background: var(--white); color: var(--navy); }
+    .mission-left .s-label { color: var(--blue); }
+    .mission-left .s-title { color: var(--navy); font-size: clamp(1.5rem, 2.5vw, 2.2rem); }
+    .mission-left p { font-size: 0.95rem; color: #3a4a60; line-height: 1.8; margin-top: 20px; }
+    .mission-right {
+      padding: 60px 56px; background: var(--navy); border-left: 1px solid var(--border);
+      display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;
+    }
+    .mission-right::before {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(26,127,212,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hex-deco { position: absolute; top: 20px; right: 20px; opacity: 0.06; }
+    .hex-deco svg { width: 140px; }
+    .mission-tag {
+      font-family: var(--font-m); font-size: 0.7rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue-light); margin-bottom: 20px;
+    }
+    .mission-statement { font-family: var(--font-h); font-size: clamp(1.3rem, 2.2vw, 1.9rem); line-height: 1.45; font-weight: 700; }
+    .mission-statement .hl { color: var(--blue-light); }
+
+    /* BARRIERS */
+    #barriers { padding: 100px 0; }
+    .barriers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .barrier-card {
+      background: var(--navy-mid); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 32px 28px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .barrier-card:hover { border-color: var(--border-b); transform: translateY(-4px); }
+    .barrier-icon {
+      width: 46px; height: 46px; border-radius: 10px;
+      background: rgba(26,127,212,0.1); border: 1px solid var(--border-b);
+      display: grid; place-items: center; margin-bottom: 20px;
+    }
+    .barrier-icon svg { width: 22px; height: 22px; stroke: var(--blue-light); fill: none; stroke-width: 1.6; }
+    .barrier-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .barrier-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+    /* WHY */
+    #why { padding: 100px 0; background: var(--navy-mid); }
+    .why-intro { max-width: 720px; margin-bottom: 60px; }
+    .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); border-radius: var(--r); overflow: hidden; }
+    .why-card {
+      background: var(--navy); padding: 40px 32px;
+      transition: background 0.3s; position: relative;
+    }
+    .why-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+    }
+    .why-card:hover { background: var(--navy-light); }
+    .why-card:hover::after { transform: scaleX(1); }
+    .why-card-icon {
+      width: 50px; height: 50px; border-radius: 12px;
+      background: rgba(26,127,212,0.1); border: 1px solid var(--border-b);
+      display: grid; place-items: center; margin-bottom: 22px;
+    }
+    .why-card-icon svg { width: 24px; height: 24px; stroke: var(--blue-light); fill: none; stroke-width: 1.5; }
+    .why-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; line-height: 1.3; }
+    .why-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+    /* SERVICES */
+    #services { padding: 100px 0; }
+    .services-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .service-card {
+      background: linear-gradient(135deg, #102040 0%, #0f1a35 100%);
+      border: 1px solid var(--border-b); border-radius: var(--r); padding: 40px;
+      position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s;
+    }
+    .service-card:hover { border-color: rgba(59,158,255,0.5); transform: translateY(-3px); }
+    .svc-num {
+      font-family: var(--font-h); font-size: 3.5rem; font-weight: 900;
+      color: rgba(26,127,212,0.15); line-height: 1;
+      position: absolute; top: 24px; right: 32px;
+    }
+    .svc-icon {
+      width: 46px; height: 46px; border-radius: 10px;
+      background: rgba(26,127,212,0.1); border: 1px solid var(--border-b);
+      display: grid; place-items: center; margin-bottom: 20px;
+    }
+    .svc-icon svg { width: 22px; height: 22px; stroke: var(--blue-light); fill: none; stroke-width: 1.5; }
+    .service-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; }
+    .service-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.75; margin-bottom: 20px; }
+    .svc-value {
+      background: var(--blue); border-radius: 8px; padding: 12px 16px;
+      font-size: 0.825rem; line-height: 1.6; color: #d6eaff;
+    }
+    .svc-value strong { color: #fff; }
+    .svc-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .svc-tag {
+      font-family: var(--font-m); font-size: 0.68rem;
+      border: 1px solid var(--border-b); color: var(--blue-light);
+      padding: 3px 10px; border-radius: 4px;
+    }
+
+    /* ENGAGE */
+    #engage { padding: 100px 0; background: var(--navy-mid); }
+    .engage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .engage-card {
+      border: 2px solid var(--border-b); border-radius: var(--r);
+      padding: 48px 44px; background: var(--navy);
+      position: relative; overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .engage-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(26,127,212,0.12); }
+    .engage-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+    }
+    .engage-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: rgba(26,127,212,0.12); border: 1px solid var(--border-b);
+      display: grid; place-items: center; margin-bottom: 26px;
+    }
+    .engage-icon svg { width: 28px; height: 28px; stroke: var(--blue-light); fill: none; stroke-width: 1.5; }
+    .engage-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; }
+    .engage-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
+
+    /* STACK */
+    #stack { padding: 100px 0; }
+    .stack-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .stack-item {
+      background: var(--navy-mid); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-m); font-size: 0.8rem; font-weight: 500;
+      color: var(--muted); letter-spacing: 0.04em;
+      transition: border-color 0.2s, color 0.2s, background 0.2s; text-align: center;
+    }
+    .stack-item:hover { border-color: var(--border-b); color: var(--white); background: var(--navy-light); }
+
+    /* CASES */
+    #cases { padding: 100px 0; background: var(--navy-mid); }
+    .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .case-card {
+      background: var(--navy); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .case-card:hover { border-color: var(--border-b); transform: translateY(-4px); }
+    .case-header { padding: 28px 28px 20px; border-bottom: 1px solid var(--border); }
+    .case-industry {
+      font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue-light); margin-bottom: 8px;
+    }
+    .case-header h3 { font-size: 1.05rem; font-weight: 700; }
+    .case-body { padding: 24px 28px 0; flex: 1; }
+    .case-section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .case-section-label::before { content: ''; display: inline-block; width: 14px; height: 1px; background: var(--muted); }
+    .case-body p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+    .case-impact { background: var(--blue); padding: 20px 28px; margin-top: auto; }
+    .case-impact .case-section-label { color: rgba(255,255,255,0.7); }
+    .case-impact .case-section-label::before { background: rgba(255,255,255,0.5); }
+    .case-impact p { color: #d0e8ff; margin-bottom: 0; font-size: 0.875rem; font-weight: 500; }
+
+    /* ADVANTAGE */
+    #advantage { padding: 100px 0; }
+    .advantage-intro { text-align: center; max-width: 680px; margin: 0 auto 60px; }
+    .advantage-intro .s-sub { margin: 0 auto; }
+    .advantage-big { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .advantage-small { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .adv-card {
+      background: var(--navy-mid); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 40px; transition: border-color 0.3s;
+    }
+    .adv-card:hover { border-color: var(--border-b); }
+    .adv-card.big { padding: 52px 48px; }
+    .adv-num { font-family: var(--font-h); font-weight: 900; font-size: clamp(2.8rem, 5vw, 4.2rem); color: var(--white); line-height: 1; margin-bottom: 8px; }
+    .adv-num span { color: var(--blue-light); }
+    .adv-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
+    .adv-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+    /* PROCESS */
+    #process { padding: 100px 0; background: var(--navy-mid); }
+    .process-steps {
+      display: flex; align-items: flex-start; gap: 0;
+      margin-bottom: 80px; position: relative;
+    }
+    .process-steps::before {
+      content: ''; position: absolute;
+      top: 38px; left: 60px; right: 60px; height: 1px;
+      background: linear-gradient(90deg, var(--border-b), var(--cyan), var(--border-b));
+      z-index: 0;
+    }
+    .p-step { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 16px; position: relative; z-index: 1; }
+    .p-step-num {
+      width: 76px; height: 76px; border-radius: 50%;
+      background: var(--navy); border: 2px solid var(--blue);
+      display: grid; place-items: center; margin-bottom: 20px; flex-shrink: 0;
+    }
+    .p-step-num span { font-family: var(--font-h); font-size: 1.8rem; font-weight: 900; color: var(--blue-light); }
+    .p-step h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+    .p-step p { font-size: 0.825rem; color: var(--muted); line-height: 1.65; }
+    .cta-box {
+      background: var(--navy); border: 1px solid var(--border-b);
+      border-radius: 20px; padding: 72px 80px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 50%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue-light), transparent);
+    }
+    .cta-box::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(26,127,212,0.07), transparent 70%);
+      pointer-events: none;
+    }
+    .cta-box h2 { font-family: var(--font-h); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; margin-bottom: 16px; position: relative; z-index: 1; }
+    .cta-box h2 span { color: var(--blue-light); }
+    .cta-box p { font-size: 1rem; color: var(--muted); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; position: relative; z-index: 1; }
+    .cta-email {
+      display: flex; max-width: 460px; margin: 0 auto 14px;
+      background: var(--navy-light); border: 1px solid var(--border-b);
+      border-radius: 100px; overflow: hidden; position: relative; z-index: 1;
+    }
+    .cta-email input {
+      flex: 1; background: none; border: none; outline: none;
+      padding: 14px 22px; color: var(--white); font-family: var(--font-b); font-size: 0.9rem;
+    }
+    .cta-email input::placeholder { color: var(--dim); }
+    .cta-email button {
+      background: var(--blue); border: none; cursor: pointer;
+      padding: 14px 26px; font-family: var(--font-b); font-weight: 600;
+      font-size: 0.875rem; color: #fff; border-radius: 0 100px 100px 0;
+      transition: background 0.2s;
+    }
+    .cta-email button:hover { background: var(--blue-b); }
+    .cta-note { font-size: 0.75rem; color: var(--dim); position: relative; z-index: 1; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 60px 0 36px; background: var(--navy); }
+    .footer-grid { display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 52px; }
+    .footer-brand p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-top: 16px; max-width: 300px; }
+    .footer-col h6 { font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a { font-size: 0.875rem; color: var(--muted); transition: color 0.2s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid var(--border); padding-top: 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.8rem; color: var(--dim); flex-wrap: wrap; gap: 12px;
+    }
+    .footer-socials { display: flex; gap: 12px; }
+    .social-btn {
+      width: 34px; height: 34px; border-radius: 8px;
+      border: 1px solid var(--border); color: var(--muted);
+      display: grid; place-items: center; font-size: 0.75rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-btn:hover { border-color: var(--border-b); color: var(--white); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* MOBILE */
+    @media (max-width: 960px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column; gap: 24px;
+        position: fixed; inset: 0; background: var(--navy);
+        justify-content: center; align-items: center; z-index: 200; font-size: 1.2rem;
+      }
+      .hamburger { display: flex; }
+      .mission-grid { grid-template-columns: 1fr; }
+      .barriers-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .services-cards { grid-template-columns: 1fr; }
+      .engage-grid { grid-template-columns: 1fr; }
+      .stack-grid { grid-template-columns: repeat(3, 1fr); }
+      .cases-grid { grid-template-columns: 1fr; }
+      .advantage-big { grid-template-columns: 1fr; }
+      .advantage-small { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .process-steps { flex-direction: column; gap: 32px; }
+      .process-steps::before { display: none; }
+      .cta-box { padding: 48px 28px; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 0 20px; }
+      .barriers-grid, .why-grid, .advantage-small { grid-template-columns: 1fr; }
+      .stack-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="container nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L4 7l8 5 8-5-8-5zM4 12l8 5 8-5M4 17l8 5 8-5"/></svg>
+      </div>
+      <div class="logo-wordmark">
+        <strong>Data Foundation Labs</strong>
+        <span>DF LABS · AI</span>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#mission">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#engage">Engagement</a></li>
+      <li><a href="#cases">Case Studies</a></li>
+      <li><a href="#process" class="nav-cta">Get in Touch</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wave-bg">
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="none" stroke="rgba(26,127,212,0.6)" stroke-width="1.5" d="M0,160 C240,220 480,80 720,160 C960,240 1200,100 1440,160"/>
+      <path fill="none" stroke="rgba(0,201,228,0.4)" stroke-width="1" d="M0,200 C300,260 600,140 900,200 C1100,240 1300,160 1440,200"/>
+      <path fill="none" stroke="rgba(26,127,212,0.25)" stroke-width="1" d="M0,120 C200,80 500,200 800,120 C1000,60 1250,180 1440,120"/>
+    </svg>
+  </div>
+  <div class="hero-cloud">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="180" r="120" fill="rgba(26,127,212,1)"/>
+      <circle cx="130" cy="190" r="90" fill="rgba(26,127,212,1)"/>
+      <circle cx="280" cy="185" r="100" fill="rgba(26,127,212,1)"/>
+      <circle cx="200" cy="140" r="80" fill="rgba(26,127,212,1)"/>
+    </svg>
+  </div>
+  <div class="container">
+    <p class="hero-label">Data Foundation Labs (DF Labs)</p>
+    <h1>Turning Data Complexity<br>Into <span class="hl">Competitive</span><br>Advantage</h1>
+    <p class="hero-sub">DF Labs accelerates your data transformation with scalable engineering talent, modern technologies, and rapid delivery — faster, cheaper, and with less risk than traditional in-house teams.</p>
+    <div class="hero-actions">
+      <a href="#process" class="btn-primary">
+        Accelerate Your Roadmap
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#services" class="btn-ghost">Explore Our Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section id="mission">
+  <div class="container">
+    <div class="mission-grid reveal">
+      <div class="mission-left">
+        <p class="s-label">Accelerating Your Data Transformation</p>
+        <h2 class="s-title">Who We Are</h2>
+        <p>DF Labs accelerates your data transformation with scalable engineering talent, modern technologies, and rapid delivery. We help enterprises build reliable, insight-driven data systems — faster, cheaper, and with less risk than traditional in-house teams.</p>
+      </div>
+      <div class="mission-right">
+        <div class="hex-deco">
+          <svg viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="100,10 190,57.5 190,152.5 100,200 10,152.5 10,57.5" stroke="white" stroke-width="2"/>
+            <polygon points="100,35 165,72.5 165,147.5 100,185 35,147.5 35,72.5" stroke="white" stroke-width="1.5" opacity="0.5"/>
+          </svg>
+        </div>
+        <p class="mission-tag">Our Mission</p>
+        <p class="mission-statement">
+          To <span class="hl">empower</span> organizations with modern, <span class="hl">scalable</span> data foundations that drive <span class="hl">smarter decisions</span>, operational efficiency, and long-term growth.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BARRIERS -->
+<section id="barriers">
+  <div class="container">
+    <div class="reveal">
+      <p class="s-label">The Problem</p>
+      <h2 class="s-title">The Barriers to Scalability</h2>
+      <p class="s-sub">Enterprise IT leaders face mounting challenges that slow innovation and limit scalability. These barriers prevent organizations from unlocking the full value of their data assets.</p>
+    </div>
+    <div class="barriers-grid reveal">
+      <div class="barrier-card">
+        <div class="barrier-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h4>Capacity Constraints</h4>
+        <p>Internal teams are fully allocated to core initiatives, limiting near-term project lift due to competing priorities.</p>
+      </div>
+      <div class="barrier-card">
+        <div class="barrier-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+        <h4>Skills &amp; Capabilities Gap</h4>
+        <p>Specialized skills are developing internally, creating a need for targeted expertise to accelerate outcomes.</p>
+      </div>
+      <div class="barrier-card">
+        <div class="barrier-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h4>Limited Flexibility</h4>
+        <p>Existing tools and processes make it hard to adapt quickly as data volume and use cases grow exponentially.</p>
+      </div>
+      <div class="barrier-card">
+        <div class="barrier-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h4>Core Operations Focus</h4>
+        <p>Teams remain rightly prioritized on core business functions; non-core build work competes for attention.</p>
+      </div>
+      <div class="barrier-card">
+        <div class="barrier-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h4>Extended Timelines</h4>
+        <p>Longer delivery cycles delay decision-quality data availability and time-sensitive business opportunities.</p>
+      </div>
+      <div class="barrier-card">
+        <div class="barrier-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h4>Drowning in Repetitive Work</h4>
+        <p>Manual work, slow handoffs, AI adoption bottlenecks, and process inefficiencies keep slowing you down.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY DF LABS -->
+<section id="why">
+  <div class="container">
+    <div class="why-intro reveal">
+      <p class="s-label">The DF Labs Difference</p>
+      <h2 class="s-title">Bridging Capability Gaps.<br>Accelerating Time-to-Value.</h2>
+      <p class="s-sub">DF Labs delivers end-to-end expertise that bridges your capability gaps and accelerates time-to-value. Our integrated approach combines technical excellence with flexible engagement models.</p>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <div class="why-card-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h4>Deep Technical Knowledge</h4>
+        <p>Bring proven technical know-how with modern data stack expertise across cloud platforms, orchestration, and analytics engineering.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h4>Skilled Resources On-Demand</h4>
+        <p>Access expert data engineers, data analysts, and ML engineers who integrate seamlessly with your existing teams.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h4>Cost-Effective Delivery</h4>
+        <p>Deliver scalable solutions faster and more cost-effectively than traditional hiring or consulting models.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h4>Seamless Collaboration</h4>
+        <p>Enable frictionless collaboration across multiple time zones with clear communication and agile workflows.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="reveal">
+      <p class="s-label">What We Deliver</p>
+      <h2 class="s-title">End-to-End Expertise Across<br>the Modern Stack</h2>
+      <p class="s-sub">We deliver comprehensive data solutions across the modern stack — from raw data ingestion to advanced AI deployment. Each service is designed to create measurable business impact.</p>
+    </div>
+    <div class="services-cards reveal">
+      <div class="service-card">
+        <span class="svc-num">01</span>
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h3>Data Engineering</h3>
+        <p>Design and build ETL/ELT pipelines using Apache Spark, Airflow, Kafka, and Fivetran. Ingest data from APIs, databases, flat files, and streaming sources.</p>
+        <div class="svc-value"><strong>Value:</strong> Transforms raw, scattered data into a single source of truth for faster decision-making.</div>
+        <div class="svc-stack">
+          <span class="svc-tag">Apache Spark</span><span class="svc-tag">Airflow</span><span class="svc-tag">Kafka</span><span class="svc-tag">Fivetran</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="svc-num">02</span>
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <h3>Cloud Data Warehousing</h3>
+        <p>Design optimized data models with star/snowflake schemas and migrate on-premise warehouses to cloud platforms — Snowflake, Redshift, and BigQuery.</p>
+        <div class="svc-value"><strong>Value:</strong> Handles massive data volumes at lower cost while enabling real-time analytics and self-service BI.</div>
+        <div class="svc-stack">
+          <span class="svc-tag">Snowflake</span><span class="svc-tag">Redshift</span><span class="svc-tag">BigQuery</span><span class="svc-tag">dbt</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="svc-num">03</span>
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <h3>Analytics Engineering</h3>
+        <p>Transform raw data into analysis-ready datasets using dbt. Define business KPIs consistently and create reusable data marts with version-controlled, testable SQL.</p>
+        <div class="svc-value"><strong>Value:</strong> Eliminates "multiple versions of truth" and delivers trustworthy dashboards to business teams.</div>
+        <div class="svc-stack">
+          <span class="svc-tag">dbt</span><span class="svc-tag">Sigma Computing</span><span class="svc-tag">SQL</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="svc-num">04</span>
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
+        <h3>Agentic AI, ML/DL</h3>
+        <p>Build predictive models for churn prediction, demand forecasting, and recommendation systems. Deploy NLP models for text analytics and chatbots.</p>
+        <div class="svc-value"><strong>Value:</strong> Turns historical data into actionable foresight and creates competitive advantage through personalization.</div>
+        <div class="svc-stack">
+          <span class="svc-tag">Python</span><span class="svc-tag">Claude AI</span><span class="svc-tag">Copilot</span><span class="svc-tag">ML/DL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENGAGEMENT MODELS -->
+<section id="engage">
+  <div class="container">
+    <div class="reveal" style="text-align:center;max-width:680px;margin:0 auto 60px;">
+      <p class="s-label">How We Work</p>
+      <h2 class="s-title">Engagement Models Aligned<br>With Your Strategic Priorities</h2>
+      <p class="s-sub" style="margin:0 auto;">Choose the approach that aligns with your strategic priorities, timeline, and risk tolerance. Each model is designed for maximum flexibility and business value.</p>
+    </div>
+    <div class="engage-grid reveal">
+      <div class="engage-card">
+        <div class="engage-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h3>Model 1: Project-Based Execution</h3>
+        <p>Defined scope and fixed timelines. Ideal for high-impact initiatives where speed and predictability matter. We deliver fully scoped solutions with clear milestones and minimal operational overhead.</p>
+      </div>
+      <div class="engage-card">
+        <div class="engage-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Model 2: Dedicated Offshore Team</h3>
+        <p>Ongoing support that scales as you grow. Extend your capability instantly without hiring delays, retention challenges, or long-term cost commitments.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="stack">
+  <div class="container">
+    <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto 56px;">
+      <p class="s-label">Technology</p>
+      <h2 class="s-title">Built on the Modern Data Stack</h2>
+      <p class="s-sub" style="margin:0 auto;">We leverage best-in-class technologies to deliver enterprise-grade solutions that scale with your business needs.</p>
+    </div>
+    <div class="stack-grid reveal">
+      <div class="stack-item">Databricks</div>
+      <div class="stack-item">AWS</div>
+      <div class="stack-item">Kubernetes</div>
+      <div class="stack-item">Snowflake</div>
+      <div class="stack-item">Airflow</div>
+      <div class="stack-item">Docker</div>
+      <div class="stack-item">dbt</div>
+      <div class="stack-item">Sigma Computing</div>
+      <div class="stack-item">Fivetran</div>
+      <div class="stack-item">Apache Spark</div>
+      <div class="stack-item">Python</div>
+      <div class="stack-item">GitHub Copilot</div>
+      <div class="stack-item">Claude AI</div>
+      <div class="stack-item">Cursor</div>
+      <div class="stack-item">Google Cloud</div>
+      <div class="stack-item">Metaplane</div>
+      <div class="stack-item">Amazon Redshift</div>
+      <div class="stack-item">Dagster</div>
+      <div class="stack-item">Prefect</div>
+      <div class="stack-item">BigQuery</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="cases">
+  <div class="container">
+    <div class="reveal">
+      <p class="s-label">Case Studies</p>
+      <h2 class="s-title">Proven Impact in Complex,<br>Regulated Environments</h2>
+      <p class="s-sub">Real-world results across industries demonstrate our ability to deliver measurable outcomes.</p>
+    </div>
+    <div class="cases-grid reveal">
+      <div class="case-card">
+        <div class="case-header">
+          <p class="case-industry">Financial Services</p>
+          <h3>Unified Mortgage Data &amp; Compliance Reporting</h3>
+        </div>
+        <div class="case-body">
+          <p class="case-section-label">Challenge</p>
+          <p>Disparate mortgage data across multiple systems creating reporting delays and compliance risks.</p>
+          <p class="case-section-label">Solution</p>
+          <p>Built comprehensive data ingestion pipeline from Postgres, S3, SFTP, SQL Server, and Snowflake into Databricks. Implemented dbt transformations and Sigma Computing visualizations.</p>
+        </div>
+        <div class="case-impact">
+          <p class="case-section-label">Impact</p>
+          <p>Unified reporting, faster regulatory compliance, and improved decision-making speed.</p>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-header">
+          <p class="case-industry">Hospitality Industry</p>
+          <h3>Guest Data Transformation &amp; Personalization</h3>
+        </div>
+        <div class="case-body">
+          <p class="case-section-label">Challenge</p>
+          <p>Complex guest data requiring sophisticated transformation logic for operational insights.</p>
+          <p class="case-section-label">Solution</p>
+          <p>Deployed dbt Core on Snowflake to create modular, tested transformation pipelines.</p>
+        </div>
+        <div class="case-impact">
+          <p class="case-section-label">Impact</p>
+          <p>Consistent metrics across properties and improved guest personalization capabilities.</p>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-header">
+          <p class="case-industry">SaaS Platform</p>
+          <h3>Unified Product Analytics at Scale</h3>
+        </div>
+        <div class="case-body">
+          <p class="case-section-label">Challenge</p>
+          <p>Integrating data from diverse SaaS applications for unified product analytics.</p>
+          <p class="case-section-label">Solution</p>
+          <p>Created scalable data pipelines leveraging REST APIs and JDBC connectors.</p>
+        </div>
+        <div class="case-impact">
+          <p class="case-section-label">Impact</p>
+          <p>Real-time product insights and accelerated feature development cycles.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVANTAGE -->
+<section id="advantage">
+  <div class="container">
+    <div class="advantage-intro reveal">
+      <p class="s-label">The DF Labs Advantage</p>
+      <h2 class="s-title">Why Enterprises Choose DF Labs</h2>
+      <p class="s-sub">DF Labs combines deep technical expertise with flexible delivery models to deliver exceptional value for enterprise clients.</p>
+    </div>
+    <div class="advantage-big reveal">
+      <div class="adv-card big">
+        <div class="adv-num">50–70<span>%</span></div>
+        <h4>Cost &amp; Time Savings</h4>
+        <p>Our global delivery model cuts operational costs while accelerating delivery, giving you faster ROI and freeing capital for strategic initiatives.</p>
+      </div>
+      <div class="adv-card big">
+        <div class="adv-num">100<span>%</span></div>
+        <h4>Compliance Ready</h4>
+        <p>Deep expertise in regulated industries ensures your pipelines, governance, and reporting meet strict compliance standards with zero disruption.</p>
+      </div>
+    </div>
+    <div class="advantage-small reveal">
+      <div class="adv-card">
+        <h4>24/7 Scalable Talent</h4>
+        <p>Instant access to top-tier data talent without hiring delays or retention challenges. Scale capacity effortlessly as priorities shift.</p>
+      </div>
+      <div class="adv-card">
+        <h4>Agile Delivery</h4>
+        <p>Rapid, iterative delivery with real-time visibility reduces risk and ensures milestones are consistently hit.</p>
+      </div>
+      <div class="adv-card">
+        <h4>Clear Communication</h4>
+        <p>Transparent project management and regular stakeholder updates give executives confidence in execution.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS / CTA -->
+<section id="process">
+  <div class="container">
+    <div class="reveal" style="text-align:center;max-width:640px;margin:0 auto 64px;">
+      <p class="s-label">Get Started</p>
+      <h2 class="s-title">Let's Accelerate Your Data Roadmap</h2>
+      <p class="s-sub" style="margin:0 auto;">Ready to transform your data infrastructure? Three simple steps to kick off your journey.</p>
+    </div>
+    <div class="process-steps reveal">
+      <div class="p-step">
+        <div class="p-step-num"><span>01</span></div>
+        <h4>Schedule a Discovery Call</h4>
+        <p>Discuss your current challenges and strategic objectives.</p>
+      </div>
+      <div class="p-step">
+        <div class="p-step-num"><span>02</span></div>
+        <h4>Brainstorm Solutions</h4>
+        <p>Explore tailored approaches for your specific project needs.</p>
+      </div>
+      <div class="p-step">
+        <div class="p-step-num"><span>03</span></div>
+        <h4>Build Partnership</h4>
+        <p>Establish a scalable data partnership that grows with you.</p>
+      </div>
+    </div>
+    <div class="cta-box reveal">
+      <h2>Ready to Transform Your<br><span>Data Infrastructure?</span></h2>
+      <p>Send us your work email and one of our solutions architects will reach out within one business day.</p>
+      <div class="cta-email">
+        <input type="email" placeholder="your@company.com" />
+        <button type="button">Book a Discovery Call</button>
+      </div>
+      <p class="cta-note">Or reach us directly at <strong style="color:var(--blue-light)">info@dflabs.ai</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M12 2L4 7l8 5 8-5-8-5zM4 12l8 5 8-5M4 17l8 5 8-5"/></svg>
+          </div>
+          <div class="logo-wordmark">
+            <strong>Data Foundation Labs</strong>
+            <span>DF LABS · AI</span>
+          </div>
+        </a>
+        <p>Turning data complexity into competitive advantage. We help enterprises build reliable, insight-driven data systems — faster and with less risk.</p>
+      </div>
+      <div class="footer-col">
+        <h6>Services</h6>
+        <ul>
+          <li><a href="#services">Data Engineering</a></li>
+          <li><a href="#services">Cloud Data Warehousing</a></li>
+          <li><a href="#services">Analytics Engineering</a></li>
+          <li><a href="#services">Agentic AI &amp; ML/DL</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h6>Company</h6>
+        <ul>
+          <li><a href="#mission">About DF Labs</a></li>
+          <li><a href="#cases">Case Studies</a></li>
+          <li><a href="#engage">Engagement Models</a></li>
+          <li><a href="#stack">Tech Stack</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h6>Contact</h6>
+        <ul>
+          <li><a href="mailto:info@dflabs.ai">info@dflabs.ai</a></li>
+          <li><a href="#process">Book a Discovery Call</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Data Foundation Labs. All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">X</a>
+        <a href="#" class="social-btn">gh</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
+  function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+  document.getElementById('navLinks').querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
+  );
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
