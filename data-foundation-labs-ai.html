@@ -270,11 +270,12 @@
     .stack-item {
       background: var(--navy-mid); border: 1px solid var(--border);
       border-radius: 10px; padding: 18px 16px;
-      display: flex; align-items: center; justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
       font-family: var(--font-m); font-size: 0.8rem; font-weight: 500;
       color: var(--muted); letter-spacing: 0.04em;
       transition: border-color 0.2s, color 0.2s, background 0.2s; text-align: center;
     }
+    .stack-item img { width: 32px; height: 32px; object-fit: contain; }
     .stack-item:hover { border-color: var(--border-b); color: var(--white); background: var(--navy-light); }
 
     /* CASES */
@@ -379,14 +380,20 @@
       transition: background 0.2s;
     }
     .cta-email button:hover { background: var(--blue-b); }
+    .cta-email button:disabled { opacity: 0.7; cursor: not-allowed; }
+    .cta-form-message { font-size: 0.9rem; margin: 0 auto 8px; min-height: 1.4em; position: relative; z-index: 1; }
+    .cta-form-message.success { color: var(--blue-light); }
+    .cta-form-message.error { color: #f87171; }
     .cta-note { font-size: 0.75rem; color: var(--dim); position: relative; z-index: 1; }
 
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 60px 0 36px; background: var(--navy); }
-    .footer-grid { display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 52px; }
+    .footer-grid { display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 52px; align-items: start; }
     .footer-brand p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-top: 16px; max-width: 300px; }
-    .footer-col h6 { font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 18px; }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col { display: flex; flex-direction: column; }
+    .footer-col h6 { font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin: 0 0 18px 0; }
+    .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col li { margin: 0; padding: 0; }
     .footer-col a { font-size: 0.875rem; color: var(--muted); transition: color 0.2s; }
     .footer-col a:hover { color: var(--white); }
     .footer-bottom {
@@ -684,26 +691,26 @@
       <p class="s-sub" style="margin:0 auto;">We leverage best-in-class technologies to deliver enterprise-grade solutions that scale with your business needs.</p>
     </div>
     <div class="stack-grid reveal">
-      <div class="stack-item">Databricks</div>
-      <div class="stack-item">AWS</div>
-      <div class="stack-item">Kubernetes</div>
-      <div class="stack-item">Snowflake</div>
-      <div class="stack-item">Airflow</div>
-      <div class="stack-item">Docker</div>
-      <div class="stack-item">dbt</div>
-      <div class="stack-item">Sigma Computing</div>
-      <div class="stack-item">Fivetran</div>
-      <div class="stack-item">Apache Spark</div>
-      <div class="stack-item">Python</div>
-      <div class="stack-item">GitHub Copilot</div>
-      <div class="stack-item">Claude AI</div>
-      <div class="stack-item">Cursor</div>
-      <div class="stack-item">Google Cloud</div>
-      <div class="stack-item">Metaplane</div>
-      <div class="stack-item">Amazon Redshift</div>
-      <div class="stack-item">Dagster</div>
-      <div class="stack-item">Prefect</div>
-      <div class="stack-item">BigQuery</div>
+      <div class="stack-item"><img src="images/stack-logos/databricks-symbol-color.svg" alt="" /><span>Databricks</span></div>
+      <div class="stack-item"><img src="images/stack-logos/aws.svg" alt="" /><span>AWS</span></div>
+      <div class="stack-item"><img src="images/stack-logos/kubernetes.svg" alt="" /><span>Kubernetes</span></div>
+      <div class="stack-item"><img src="images/stack-logos/snowflake.svg" alt="" /><span>Snowflake</span></div>
+      <div class="stack-item"><img src="images/stack-logos/airflow-icon-dark.svg" alt="" /><span>Airflow</span></div>
+      <div class="stack-item"><img src="images/stack-logos/docker.svg" alt="" /><span>Docker</span></div>
+      <div class="stack-item"><img src="images/stack-logos/dbt.svg" alt="" /><span>dbt</span></div>
+      <div class="stack-item"><img src="images/stack-logos/sigmacomputing.svg" alt="" /><span>Sigma Computing</span></div>
+      <div class="stack-item"><img src="images/stack-logos/fivetran.svg" alt="" /><span>Fivetran</span></div>
+      <div class="stack-item"><img src="images/stack-logos/apachespark.svg" alt="" /><span>Apache Spark</span></div>
+      <div class="stack-item"><img src="images/stack-logos/python.svg" alt="" /><span>Python</span></div>
+      <div class="stack-item"><img src="images/stack-logos/copilot.svg" alt="" /><span>GitHub Copilot</span></div>
+      <div class="stack-item"><img src="images/stack-logos/claude.svg" alt="" /><span>Claude AI</span></div>
+      <div class="stack-item"><img src="images/stack-logos/cursor.svg" alt="" /><span>Cursor</span></div>
+      <div class="stack-item"><img src="images/stack-logos/googlecloud.svg" alt="" /><span>Google Cloud</span></div>
+      <div class="stack-item"><img src="images/stack-logos/metaplane.svg" alt="" /><span>Metaplane</span></div>
+      <div class="stack-item"><img src="images/stack-logos/amazon-redshift.svg" alt="" /><span>Amazon Redshift</span></div>
+      <div class="stack-item"><img src="images/stack-logos/dagster.svg" alt="" /><span>Dagster</span></div>
+      <div class="stack-item"><img src="images/stack-logos/prefect.svg" alt="" /><span>Prefect</span></div>
+      <div class="stack-item"><img src="images/stack-logos/googlebigquery.svg" alt="" /><span>BigQuery</span></div>
     </div>
   </div>
 </section>
@@ -834,10 +841,12 @@
     <div class="cta-box reveal">
       <h2>Ready to Transform Your<br><span>Data Infrastructure?</span></h2>
       <p>Send us your work email and one of our solutions architects will reach out within one business day.</p>
-      <div class="cta-email">
-        <input type="email" placeholder="your@company.com" />
-        <button type="button">Book a Discovery Call</button>
-      </div>
+      <!-- Replace YOUR_FORM_ID with your Formspree form ID (create one at formspree.io) -->
+      <form id="cta-email-form" class="cta-email" action="https://formspree.io/f/xwvrbjle" method="POST" novalidate>
+        <input type="email" name="email" placeholder="your@company.com" required aria-label="Work email" />
+        <button type="submit">Book a Discovery Call</button>
+      </form>
+      <p id="cta-form-message" class="cta-form-message" aria-live="polite"></p>
       <p class="cta-note">Or reach us directly at <strong style="color:var(--blue-light)">info@dflabs.ai</strong></p>
     </div>
   </div>
@@ -914,6 +923,42 @@
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // CTA email capture: submit via Formspree (or your endpoint) and show message
+  const ctaForm = document.getElementById('cta-email-form');
+  const ctaMessage = document.getElementById('cta-form-message');
+  if (ctaForm && ctaMessage) {
+    ctaForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = ctaForm.querySelector('button[type="submit"]');
+      const emailInput = ctaForm.querySelector('input[name="email"]');
+      const action = ctaForm.action;
+      if (!action || action.includes('YOUR_FORM_ID')) {
+        ctaMessage.textContent = 'Please set your Formspree form ID in the form action.';
+        ctaMessage.className = 'cta-form-message error';
+        return;
+      }
+      ctaMessage.textContent = '';
+      ctaMessage.className = 'cta-form-message';
+      btn.disabled = true;
+      try {
+        const res = await fetch(action, {
+          method: 'POST',
+          body: new FormData(ctaForm),
+          headers: { Accept: 'application/json' }
+        });
+        const data = await res.json().catch(() => ({}));
+        if (data.error) throw new Error(data.error);
+        ctaMessage.textContent = "Thanks! We'll be in touch within one business day.";
+        ctaMessage.className = 'cta-form-message success';
+        emailInput.value = '';
+      } catch (err) {
+        ctaMessage.textContent = 'Something went wrong. Please email us at info@dflabs.in.';
+        ctaMessage.className = 'cta-form-message error';
+      }
+      btn.disabled = false;
+    });
+  }
 </script>
 </body>
 </html>

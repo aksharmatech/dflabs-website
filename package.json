@@ -1,0 +1,10 @@
+{
+  "name": "dflabs-website",
+  "private": true,
+  "scripts": {
+    "logos:png": "node scripts/svg-to-png-white.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}
